@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注射设备UI展示 - 完整视频显示</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
+            color: #2c3e50;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #3498db;
+        }
+        
+        /* 完整显示视频的容器 */
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 25px;
+            background: #1a1a1a;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .video-wrapper {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 宽高比 */
+        }
+        
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* 关键修改 - 完整显示视频内容 */
+        }
+        
+        .video-info {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 0 0 12px 12px;
+        }
+        
+        .content-section {
+            padding: 20px 0;
+        }
+        
+        .content-section p {
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+        
+        .highlight-box {
+            background: #e3f2fd;
+            border-left: 4px solid #3498db;
+            padding: 18px;
+            border-radius: 0 8px 8px 0;
+            margin: 25px 0;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 22px;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            background: #e3f2fd;
+            transform: translateX(5px);
+        }
+        
+        .feature-card h3 {
+            color: #2980b9;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-card h3::before {
+            content: "•";
+            color: #3498db;
+            font-size: 2rem;
+            margin-right: 10px;
+            line-height: 0;
+        }
+        
+        .status-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 100px;
+        }
+        
+        .light {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .normal { background: linear-gradient(145deg, #2ecc71, #27ae60); }
+        .warning { background: linear-gradient(145deg, #f39c12, #e67e22); }
+        .danger { background: linear-gradient(145deg, #e74c3c, #c0392b); }
+        
+        .indicator span {
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 25px;
+            color: #7f8c8d;
+            font-size: 0.95rem;
+            border-top: 1px solid #e0e6ed;
+            border-radius: 0 0 12px 12px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            header {
+                padding: 20px 15px;
+            }
+            
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .status-indicators {
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .card {
+                padding: 18px;
+            }
+            
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>注射设备控制系统 UI 展示</h1>
+            <p>完整视频显示 | 智能注射监控系统</p>
+        </header>
+        
+        <div class="card">
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <video controls poster="https://via.placeholder.com/800x450/2c3e50/ecf0f1?text=注射设备演示视频">
+                        <source src="show.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放，请使用现代浏览器如Chrome、Firefox或Edge。
+                    </video>
+                </div>
+                <div class="video-info">视频比例：16:9 | 完整显示 | 可全屏观看</div>
+            </div>
+            
+            <div class="content-section">
+                <h2>视频说明</h2>
+                <p>本视频完整展示了注射设备的运行流程和工作原理，未进行任何裁剪。</p>
+                
+                <div class="highlight-box">
+                    <p><strong>注意：</strong> 为了体现临界情况，视频中设置的注射速度较快，目标注射量较大且设备容量较小。</p>
+                    <p>由于硬件情况尚未明确，目前采用了一个简化的模型在后台线程模拟注射流程。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="content-section">
+                <h2>设备状态指示</h2>
+                <p>控制界面实时显示设备状态和各项参数，确保注射过程安全可控：</p>
+                
+                <div class="status-indicators">
+                    <div class="indicator">
+                        <div class="light normal"></div>
+                        <span>正常状态<br>(药量 > 20%)</span>
+                    </div>
+                    <div class="indicator">
+                        <div class="light warning"></div>
+                        <span>预警状态<br>(5% ≤ 药量 ≤ 20%)</span>
+                    </div>
+                    <div class="indicator">
+                        <div class="light danger"></div>
+                        <span>警告状态<br>(药量 < 5%)</span>
+                    </div>
+                </div>
+                
+                <div class="highlight-box">
+                    <p>设备中剩余药剂量不足一次注射任务时，无法开始注射；</p>
+                    <p>注射中途药剂量低于20%时，指示灯变黄；低于5%时，指示灯变红并发出警告。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="content-section">
+                <h2>用户交互功能</h2>
+                <p>系统提供直观的操作界面和实时的状态反馈：</p>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h3>参数设置</h3>
+                        <p>用户可自定义注射速度和目标注射量。系统会对超出安全范围的设置发出警告，防止不当操作。</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h3>注射控制</h3>
+                        <p>设定参数后点击"开始注射"按钮启动任务。注射过程中可以随时"暂停注射"或"停止注射"。</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h3>状态恢复</h3>
+                        <p>暂停状态点击"开始注射"可继续之前的进程。停止或完成后点击"开始注射"将根据当前参数重新开始。</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h3>实时监控</h3>
+                        <p>界面实时显示注射进度、剩余时间、当前速度和已完成剂量，所有数据每秒更新。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>注射设备控制系统 | 医疗设备UI展示 | © 2023 医疗科技公司</p>
+            <p style="margin-top: 8px; font-size: 0.9rem; opacity: 0.8;">视频完整显示解决方案 - 使用 object-fit: contain 技术</p>
+        </footer>
+    </div>
+</body>
+</html>
